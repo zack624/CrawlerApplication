@@ -14,13 +14,18 @@ import java.util.regex.Pattern;
 
 public class BaiduCrawler {
 	
-	public static String sentGet(String urlString){
+	public static String sentGet(String urlString,String code){
 		BufferedReader in = null;
 		String webContent = "";
 		try{
 			URL url = new URL(urlString);
 			URLConnection connection = url.openConnection();
-			in = new BufferedReader(new InputStreamReader(connection.getInputStream(),"GBK"));
+			connection.setRequestProperty("Accept", "*/*");
+			connection.setRequestProperty("Connection", "Keep-Alive");
+			connection.setRequestProperty("User-Agent",
+					"Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)");
+			connection.connect();
+			in = new BufferedReader(new InputStreamReader(connection.getInputStream(),code));
 			String line;
 			while((line = in.readLine()) != null){
 				webContent += line;
@@ -29,7 +34,9 @@ public class BaiduCrawler {
 			e.printStackTrace();
 		}finally{
 			try {
-				in.close();
+				if(in != null){
+					in.close();
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -67,15 +74,15 @@ public class BaiduCrawler {
 		Set<String> resultSet = new HashSet<String>();
 		Set<String> userfulSet = new HashSet<String>();
 		for(int i = 1 ; i < 3 ; i++){
-			String tiebaSearch = sentGet("http://tieba.baidu.com/f/search/res?isnew=1&kw=&qw=homepage%3Fshort%3D&rn=10&un=&only_thread=0&sm=1&sd=&ed=&pn="+i);
-//			System.out.println(tiebaSearch);
+			String tiebaSearch = sentGet("http://tieba.baidu.com/f/search/res?isnew=1&kw=&qw=homepage%3Fshort%3D&rn=10&un=&only_thread=0&sm=1&sd=&ed=&pn="+i,"GBK");
+			System.out.println(tiebaSearch);
 			
 			tempSet = regexFilter2(tiebaSearch, "short=</em>(.......)");
 			resultSet.addAll(tempSet);
 		}
 		for (String string : resultSet) {
-			String inv = sentGet(string);
-//			System.out.println(string);
+			System.out.println(string);
+			String inv = sentGet(string,"UTF-8");
 			if(inv.contains("加入该群组")){
 				userfulSet.add(string);
 			}
