@@ -10,8 +10,23 @@ public class ZhihuCrawlingDemo {
 		String htmlContent = CrawlerUtils.sentGet("http://www.zhihu.com/explore/recommendations",
 				"utf-8");
 		
-		List zhihuList = getListRegexFilter(htmlContent);
-		System.out.println(zhihuList);
+		List<Zhihu> zhihuList = getListRegexFilter(htmlContent);
+
+		String testQ = CrawlerUtils.sentGet("http://www.zhihu.com/question/31491796", "utf-8");
+		Zhihu z = new Zhihu();
+		getListAnswer(testQ,z);
+		System.out.println(z.getQuestionDesciption());
+		System.out.println(z.getAnswer().size());
+		
+//		for (Zhihu zhihu : zhihuList) {
+//			int index = zhihu.getZhihuUrl().indexOf("answer") - 1;
+//			String url = zhihu.getZhihuUrl().substring(0,index);
+//			
+//			String answerPage = CrawlerUtils.sentGet(url,"utf-8");
+//			getListAnswer(answerPage, zhihu);
+//		}
+//		System.out.println(zhihuList);
+		
 	}
 	
 	public static List<Zhihu> getListRegexFilter(String input){
@@ -34,5 +49,27 @@ public class ZhihuCrawlingDemo {
 			zhihuList.add(zhihu);
 		}
 		return zhihuList;
+	}
+	
+	public static void getListAnswer(String input,Zhihu zhihu){
+		
+		
+		Pattern pdescription = Pattern.compile("\">.+?<div class=\"zm-editable-content\">(.+?)</div");
+		Matcher mdescription = pdescription.matcher(input);
+		if(mdescription.find()){
+			String description = mdescription.group(1);
+			zhihu.setQuestionDesciption(description);
+		}
+		
+		List answers = new ArrayList();
+		
+		Pattern panswer = Pattern.compile("zm-editable-content clearfix\">(.+?)</div");
+		Matcher manswer = panswer.matcher(input);
+		while(manswer.find()){
+			String answer = manswer.group(1);
+			answers.add(answer);
+		}
+		zhihu.setAnswer(answers);
+		
 	}
 }

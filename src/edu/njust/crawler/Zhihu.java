@@ -1,20 +1,24 @@
 package edu.njust.crawler;
 
+import java.util.List;
+
 public class Zhihu {
 	private String question;
 	private String zhihuUrl;
-	private String answer;
+	private String questionDesciption;
+	private List answer;
 	
 	
 	public Zhihu() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-	public Zhihu(String question, String zhihuUrl, String answer) {
-		super();
-		this.question = question;
-		this.zhihuUrl = zhihuUrl;
-		this.answer = answer;
+
+	
+	public String getQuestionDesciption() {
+		return questionDesciption;
+	}
+	public void setQuestionDesciption(String questionDesciption) {
+		this.questionDesciption = questionDesciption;
 	}
 	public String getQuestion() {
 		return question;
@@ -28,16 +32,16 @@ public class Zhihu {
 	public void setZhihuUrl(String zhihuUrl) {
 		this.zhihuUrl = zhihuUrl;
 	}
-	public String getAnswer() {
+	public List getAnswer() {
 		return answer;
 	}
-	public void setAnswer(String answer) {
+	public void setAnswer(List answer) {
 		this.answer = answer;
 	}
 	@Override
 	public String toString() {
 		return "Zhihu [question=" + question + ", zhihuUrl=" + zhihuUrl
-				+ ", answer=" + answer + "]";
+				+ ", description=" + questionDesciption + ",answer=" + answer+"]";
 	}
 	
 }
