@@ -1,4 +1,4 @@
-package edu.njust.crawler;
+package edu.njust.zhihu;
 
 import java.util.List;
 
@@ -42,6 +42,22 @@ public class Zhihu {
 	public String toString() {
 		return "Zhihu [question=" + question + ", zhihuUrl=" + zhihuUrl
 				+ ", description=" + questionDesciption + ",answer=" + answer+"]";
+	}
+	
+	public String outputFormat(){
+		StringBuffer sb = new StringBuffer();
+		
+		sb.append("question:" + question + "\n");
+		sb.append("description:" + questionDesciption + "\n");
+		sb.append("url:" + zhihuUrl + "\n");
+		for (int i = 0;i<answer.size();i++) {
+			sb.append("answer" + (i+1) + ":" + answer.get(i) + "\n");
+		}
+		sb.append("\n**************************************\n\n");
+		String format = sb.toString();
+		format = format.replaceAll("<br>","\n         ");
+		format = format.replaceAll("<.*?>","");
+		return format;
 	}
 	
 }

@@ -1,4 +1,4 @@
-package edu.njust.crawler;
+package edu.njust.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
